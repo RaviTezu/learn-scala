@@ -1,0 +1,2 @@
+- 
+- You can pass a two or more strings to a function by having (strings:String*) as its parameter. Ex: arguments/Take_a_sequence_of_strings.scala
