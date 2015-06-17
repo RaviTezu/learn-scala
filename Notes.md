@@ -1,1 +1,0 @@
-- You can pass zero or more strings("Hello","world!") i.e varialbe length arguments to a function by having (strings:String*) as its parameter. Ex: arguments/Take_a_sequence_of_strings.scala
