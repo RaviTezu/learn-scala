@@ -1,13 +1,11 @@
 /**
  * Created by ravitezu on 17/6/15.
  */
-//object MyApp extends App {
+object MyApp extends App {
 
   trait Garage {
     val name: String
     val size: Int
-    def getName: String
-    def getSize: Int
   }
 
   trait Vehicle {
@@ -16,72 +14,41 @@
     val vManufacturer: String
   }
 
-  case class Car(vNumber:String, vType:String="sedan", vManufacturer:String) extends Vehicle {
+  class Car(val vNumber:String, val vManufacturer:String, val vType:String) extends Vehicle {
     override def toString:String = {
-      vNumber + " - " + vManufacturer + "("+vType+")"
+      vManufacturer +" "+ vType+"(" + vNumber+")"
     }
   }
 
-  case class Truck(vNumber:String, vType:String, vManufacturer:String) extends Vehicle
+  class Truck(val vNumber:String, val vManufacturer:String, val vType:String) extends Vehicle
 
-  case class Bus(vNumber:String, vType:String, vManufacturer:String) extends Vehicle
-
-  case class Bike(vNumber:String, vType:String, vManufacturer:String) extends Vehicle
-
-  case class CarGarage[+T](name:String, size:Int) extends Garage {
-    private var availability:Int = 0
-
-    def allow(car: Car):Unit = {
-      if (availability <= size) {
-        availability = availability + 1
+  class CarGarage[+T](val name:String, val size:Int) extends Garage {
+    def allow[U >: T](car: U) = {
         println(s"Allowing ${car} to Enter ${name}! - PAY THE FEE NOW! ")
-      }
     }
-
-    def exit[T <: Vehicle ](car: T):Unit = {
-      if (availability >0) {
-        println(s"Your shitty ${car} has been THROWN out of ${name}!")
-      }
-    }
-
-    def getAvailability:Boolean = {
-      availability <= size
-    }
-
-    def getName:String = {
-      name
-    }
-    def getSize:Int = {
-      size
+    override def toString():String = {
+     name
     }
   }
 
-  case class TruckGarage(name:String, size:Int) extends Garage {
-    def getName:String = {
-      name
-    }
-    def getSize:Int = {
-      size
-    }
-  }
+  class TruckGarage[-T](val name:String, val size:Int) extends Garage
 
-  case class BusGarage(name:String, size:Int) extends Garage {
-    def getName:String = {
-      name
-    }
-    def getSize:Int = {
-      size
-    }
-  }
+  val c1 = new Car("California 6L999999", "Audi", "A7")
+  println(s"Here comes the - ${c1} car \n")
 
-  case class BikeGarage(name:String, size:Int) extends Garage {
-    def getName:String = {
-      name
-    }
-    def getSize:Int = {
-      size
-    }
-  }
+  val cg = new CarGarage[Car]("Z-Car-Garage",100)
+  println(s"We have a new - ${cg} \n")
 
+  cg.allow(c1)
 
-//}
+  println("\nAccording to Elon Musk: Burning Fossil Fuels Is the 'Dumbest Experiment in History, By Far' \n")
+  println("So we have Electric Cars now! :) \n ")
+  class ECar(vNumber:String, vManufacturer:String, vType:String) extends Car(vNumber, vType, vManufacturer)
+
+  val ec1 = new Car("California 6M666666", "Tesla", "Model S")
+  println(s"Here comes the - ${ec1} electric car \n")
+
+  cg.allow(ec1)
+  println(s"\nPHEW! Finally, You can allow a subtype(Electric car) of Car into Car garage!")
+
+}
